@@ -1,20 +1,29 @@
 class Connection
 {
-  Neuron n1;
-  Neuron n2;
+  Neuron in;
+  Neuron out;
   
   float strength;
   float enhancer;
   float degrader;
   
-  Connection(Neuron n1, Neuron n2)
+  Connection(Neuron in, Neuron out)
   {
-    this.n1 = n1;
-    this.n2 = n2;
+    this.in = in;
+    this.out = out;
     
     this.strength = 0;
     this.enhancer = 0.2;
     this.degrader = 0.013;
+  }
+  
+  Neuron getIn()
+  {
+    return(in);
+  }
+  Neuron getOut()
+  {
+    return(out);
   }
   
   void degrade()
@@ -43,7 +52,7 @@ class Connection
   
   String printConnection()
   {
-    String tmp = n1.getNeuronName()+" -> "+n2.getNeuronName()+" ("+strength+")";
+    String tmp = in.getNeuronName()+" -> "+out.getNeuronName()+" ("+strength+")";
     return(tmp);
   }
   

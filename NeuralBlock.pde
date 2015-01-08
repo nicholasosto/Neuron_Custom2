@@ -4,40 +4,26 @@ class NeuralBlock
   ArrayList<Neuron> outputs;
   
   ArrayList<Connection> connections;
-  
-  int num_input;
-  int num_output;
-  
-  int counter;
-  int max_count;
-  
+
+
   NeuralBlock()
   {
     this.inputs = new ArrayList<Neuron>();
     this.outputs = new ArrayList<Neuron>();
     this.connections = new ArrayList<Connection>();
-    this.num_input = 9;
-    this.num_output = 6;
-    this.counter = 0;
-    
-    //  sensor neurons
-    for(int i=0;i<num_input;i++)
-    {
-      inputs.add(new Neuron("Neuron I"+i));
-    }
-    
-    //  patterns neurons
-    for(int i=0;i<num_output;i++)
-    {
-      outputs.add(new Neuron("Neuron P"+i));
-    }
-
-    
+  }
+  
+  void addInput(Neuron n)
+  {
+    inputs.add(n);
+  }
+  void addOutput(Neuron n)
+  {
+    outputs.add(n);
   }
   
   ArrayList<Neuron> getInputs()
   {
-    
     return(inputs);
   }
   
@@ -57,23 +43,18 @@ class NeuralBlock
     return(outputs.get(output_num));
   }
 
-  void addConnection(Neuron i_n,Neuron i_o)
+  void addConnection(Neuron in,Neuron out)
   {
-    boolean prev_con = false;
-    
-    for(Connection c: connections)
+    if(in.getOutputs().contains(out))
     {
-      if(c.n1 == i_n && c.n2 == i_o)
-      {
-        prev_con = true;
-        c.enhance();
-      }
+      println("connection already established");
     }
-    if(!prev_con)
+    else
     {
-      connections.add(new Connection(i_n,i_o));
+      connections.add(new Connection(in,out));
+      in.getOutputs().add(out);
+      out.getInputs().add(in);
     }
-       
   }
   
   void printConnections()
@@ -85,11 +66,36 @@ class NeuralBlock
     }
     
   }
+  
+  void displayInputs()
+  {
+    for(Neuron n: inputs)
+    {
+      
+      n.display();
+    }
+  }
 
 
   void displayPattern(Neuron output_neuron)
   {
-   
+     boolean prev_state;
+     
+     for(Neuron n : output_neuron.getInputs())
+     {
+       prev_state = n.isActive();
+       n.setActive(true);
+       n.display();
+       n.setActive(prev_state);
+     }
+  }
+  
+  void printPatternMatch()
+  {
+    for(Neuron n:outputs)
+    {
+      println("Output: ",n.getNeuronName(),"Score:",patternMatchScore(inputs,n));
+    }
   }
       
 }

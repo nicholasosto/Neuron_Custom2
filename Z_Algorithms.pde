@@ -12,13 +12,16 @@ boolean sigmoid(float threshold,float z)
 }
 
 
-int patternMatchScore(ArrayList<Neuron> n_inputs, Neuron output)
+float patternMatchScore(ArrayList<Neuron> n_inputs, Neuron output)
 {
-  int active_matches = 0;
-  int active_mismatches = 0;
-  int inactive_mismatches = 0;
+  float active_matches = 0;
+  float active_mismatches = 0;
+  float inactive_mismatches = 0;
+  
+  float amiss_mod = 0.3;
+  float imiss_mod = 0.3;
  
-  int match_score = 0;
+  float match_score = 0;
  
   for(Neuron in : n_inputs)
   {
@@ -40,9 +43,12 @@ int patternMatchScore(ArrayList<Neuron> n_inputs, Neuron output)
   }
  
  
-  match_score = active_matches - inactive_mismatches - active_mismatches;
-  println("Active Matches: ",active_matches);
-  println("Inactive Mis-Matches: ",inactive_mismatches);
-  println("Active Mis-Matches: ",active_mismatches);
+  
+  //println("\nActive Matches: ",active_matches);
+  //println("Inactive Mis-Matches: ",inactive_mismatches);
+  //println("Active Mis-Matches: ",active_mismatches);
+  
+  match_score = active_matches - (inactive_mismatches*imiss_mod) - (active_mismatches*amiss_mod);
   return(match_score);
+  
 }
